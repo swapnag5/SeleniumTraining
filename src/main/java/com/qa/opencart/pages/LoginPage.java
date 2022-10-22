@@ -21,6 +21,8 @@ public class LoginPage {
 	private By forgetPwdLink = By.linkText("Forgotten Password");
 	private By registerLink = By.linkText("Register");
 	
+	private By sairam = By.linkText("sairam");
+	
 	private By logoutSuccessMssg = By.cssSelector("div#common-success h1");
 
 
