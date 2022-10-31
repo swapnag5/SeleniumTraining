@@ -4,7 +4,7 @@
 <suite name="OpenCart Regression Test Suite" verbose="4" thread-count="3" parallel="tests">
 
      <listeners>
-       <!--<listener class-name="com.qa.opencart.listeners.ExtentReportListener"/> -->
+       <listener class-name="com.qa.opencart.listeners.ExtentReportListener"/> 
        <listener class-name="com.qa.opencart.listeners.TestAllureReportListener"></listener>
      </listeners>
 
