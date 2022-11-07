@@ -153,7 +153,7 @@ public class DriverFactory {
 
 	public String getScreenshot() {
 		File srcFile = ((TakesScreenshot) getDriver()).getScreenshotAs(OutputType.FILE);
-		String path = "./screenshot"+System.currentTimeMillis()+".png";
+		String path = "./" + "screenshot/" + System.currentTimeMillis() + ".png";
 		File destination = new File(path);
 		try {
 			FileUtils.copyFile(srcFile, destination);
