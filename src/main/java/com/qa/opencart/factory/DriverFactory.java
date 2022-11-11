@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
@@ -12,6 +14,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 
 import com.qa.opencart.exceptions.FrameworkException;
@@ -49,16 +52,30 @@ public class DriverFactory {
 		//cross browser logic
 		if(browserName.equalsIgnoreCase("chrome"))
 		{
+			if(Boolean.parseBoolean(prop.getProperty("remote")))
+			{
+				//remote execution on docker/cloud
+				init_remoteDriver("chrome");
+			}else {
+				//local execution
 			WebDriverManager.chromedriver().setup();
 			//driver = new ChromeDriver(optionsManager.getChromeOptions());
 			//set() initializes the driver with the thread local
 			tlDriver.set(new ChromeDriver(optionsManager.getChromeOptions()));
+			}
 		}
 		else if(browserName.equalsIgnoreCase("firefox"))
 		{
+			if(Boolean.parseBoolean(prop.getProperty("remote")))
+			{
+				//remote execution on docker/cloud
+				init_remoteDriver("firefox");
+			}else {
+				//local execution
 			WebDriverManager.firefoxdriver().setup();
 			//driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
 			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
+			}
 
 		}
 		else if(browserName.equalsIgnoreCase("safari"))
@@ -75,6 +92,23 @@ public class DriverFactory {
 		getDriver().get(prop.getProperty("url").trim());
 
 		return getDriver();//returning the thread local copy of driver
+	}
+	private void init_remoteDriver(String browserName) {
+
+		System.out.println("Running tests on remote grid server"+browserName);
+		if(browserName.equals("chrome")) {
+		try {
+			tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		}else if(browserName.equals("chrome")) {
+			try {
+				tlDriver.set(new RemoteWebDriver(new URL(prop.getProperty("huburl")), optionsManager.getChromeOptions()));
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+			}
 	}
 	/**
 	 * get the thread local copy of driver

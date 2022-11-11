@@ -18,6 +18,11 @@ public class OptionsManager {
 	
 	public ChromeOptions getChromeOptions() {
 		co = new ChromeOptions();
+		if(Boolean.parseBoolean(prop.getProperty("remote")))
+		{
+			//to visualize the test cases,we have to download VNC viewer app and make enableVNC true
+			co.setCapability("enableVNC", true);
+		}
 		if(Boolean.parseBoolean(prop.getProperty("headless"))) {
 		co.setHeadless(true);
 		}
@@ -29,6 +34,10 @@ public class OptionsManager {
 	
 	public FirefoxOptions getFirefoxOptions() {
 		fo = new FirefoxOptions();
+		if(Boolean.parseBoolean(prop.getProperty("remote")))
+		{
+			co.setCapability("enableVNC", true);
+		}
 		if(Boolean.parseBoolean(prop.getProperty("headless"))) {
 		fo.setHeadless(true);
 		}
