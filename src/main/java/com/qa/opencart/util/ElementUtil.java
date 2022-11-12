@@ -18,14 +18,18 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import com.qa.opencart.factory.DriverFactory;
+
 public class ElementUtil {
 
 	private WebDriver driver;
+	private JavascriptUtil jsUtil;
 
 	//constructor by passing parameter driver
 	public ElementUtil(WebDriver driver)
 	{
 		this.driver = driver;
+		jsUtil=new JavascriptUtil(driver);
 	}
 
 	//return the locator by passing string parameters
@@ -79,7 +83,12 @@ public class ElementUtil {
 	//get the element using By locator
 	public  WebElement getElement(By locator)
 	{
-		return driver.findElement(locator);
+		//return driver.findElement(locator);
+		WebElement ele = driver.findElement(locator);
+		if(Boolean.parseBoolean(DriverFactory.highlight)){
+			jsUtil.flash(ele);
+		}
+		return ele;
 	}
 
 	//perform click a button action

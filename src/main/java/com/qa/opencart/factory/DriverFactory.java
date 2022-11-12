@@ -9,6 +9,7 @@ import java.net.URL;
 import java.util.Properties;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.log4j.Logger;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -26,6 +27,10 @@ public class DriverFactory {
 	//private WebDriver driver;
 	private Properties prop;//it is a built in java class to get the properties file.
 	private OptionsManager optionsManager;
+	
+	public static  String highlight;
+	
+	public static final Logger log = Logger.getLogger(DriverFactory.class);
 
 	/** ThreadLocal is an inbuilt java class..
 	 * It provides thread-local variables.
@@ -45,8 +50,10 @@ public class DriverFactory {
 
 	public WebDriver init_driver(Properties prop)
 	{
-		//String browserName = prop.getProperty("browser").trim();
-		String browserName = System.getProperty("browser");
+		String browserName = prop.getProperty("browser").trim();
+		//String browserName = System.getProperty("browser");
+		
+		highlight = prop.getProperty("highlight");
 
 		optionsManager = new OptionsManager(prop);
 		//cross browser logic
@@ -72,6 +79,7 @@ public class DriverFactory {
 				init_remoteDriver("firefox");
 			}else {
 				//local execution
+				log.info("......Running tests on local machine....");
 			WebDriverManager.firefoxdriver().setup();
 			//driver = new FirefoxDriver(optionsManager.getFirefoxOptions());
 			tlDriver.set(new FirefoxDriver(optionsManager.getFirefoxOptions()));
